@@ -11,7 +11,7 @@ Generate mainly: <br>
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/5324f1e7-3471-4ce0-ab75-da1c81b7ed5a) <br>
 Information that could be read out from rvlab_fpga_top.timing_summary.txt: <br>
 
-<div style="background-color: gray; padding: 10px;">
+<div style="background-color: yellow; padding: 10px;">
 1. Timing Summary Report
 This section outlines the basic settings and configurations used during the timing analysis, including:
 
