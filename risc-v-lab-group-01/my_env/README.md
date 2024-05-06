@@ -1,12 +1,12 @@
 - [Exe02](#exe02)
-- [Modify main.c](#modify_main.c)
+- [Modify main.c](#modify_main)
   - [Perform a logic synthesis of rvlab_fpta_top](#logicsync)
   - [Perform a place and route of rvlab_fpga_top](#pnr)
   - [Generate the bitfile](#bitfile)
 - [FPGA netlist simulation](#netlist)
 
 # Exe02
-## Modify main.c
+## Modify main
 here to check 3 kind of register length <br>
 try some tests on RegA (led patterns) and RegB (FSM initial):
 * assign RegA with specific patterns
