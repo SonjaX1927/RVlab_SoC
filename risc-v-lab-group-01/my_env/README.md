@@ -44,4 +44,6 @@ Analyzing Clock Domains: Pay special attention to the cross-domain paths as they
 ### Perform a place and route of rvlab_fpga_top
 Generate again: this time also  locate the reported paths in the RTL(within the timing summary) <br>
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/aeab8169-c650-4d43-8c24-e2d31bd40597)
+the resulting schematic and layout with the tool "vivado": <br>
+![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/9a037694-825a-4655-8e0a-a5a237c095a2)
 
