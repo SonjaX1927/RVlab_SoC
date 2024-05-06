@@ -1,0 +1,19 @@
+{
+  "block_id": "libc",
+  "task_id": "build",
+  "data": {
+    "lib": {
+      "_type": "Path",
+      "value": "libc/build/baselibc.a"
+    },
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975137.550511
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975140.93474
+    }
+  }
+}

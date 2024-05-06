@@ -1,0 +1,15 @@
+{
+  "block_id": "systb_rlight",
+  "task_id": "sim_rtl_questa",
+  "data": {
+    "returned_data": false,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975147.649665
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975630.910701
+    }
+  }
+}

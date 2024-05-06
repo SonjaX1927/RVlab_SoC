@@ -1,0 +1,33 @@
+{
+  "block_id": "xbar",
+  "task_id": "generate",
+  "data": {
+    "rtl_srcs": [
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_main_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_main.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_peri_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_peri.sv"
+      }
+    ],
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975137.209719
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975137.285001
+    }
+  }
+}

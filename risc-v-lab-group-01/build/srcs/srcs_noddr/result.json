@@ -1,0 +1,408 @@
+{
+  "block_id": "srcs",
+  "task_id": "srcs_noddr",
+  "data": {
+    "fv_srcs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/student_rlight_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/tlul_test_host.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_board.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/jtag_master.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_tests.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/student_tlul_mux_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/system_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_test_utils.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/usr/xilinx/2021.2/Vivado/2021.2/data/verilog/src/glbl.v"
+      }
+    ],
+    "design_srcs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc/prim_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/pkg/top_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/pkg/prim_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/pkg/ibex_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/pkg/tlul_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/pkg/dm_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/pkg/rvlab_tap_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_main_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_main.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_peri_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_peri.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_prefetch_buffer.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_fetch_fifo.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_register_file.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_controller.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_fast.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_pmp.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core_tracing.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_ex_block.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc/prim_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/timer_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/rv_timer.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_opendrain.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_fpga_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_bram_main.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_tlul_ddr.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_cpu.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_regdemo.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_clkmgr.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/tlul_adapter_host.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_cdc.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_debug.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rv_dm.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/debug_rom.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_jtag.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_async.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_assert_multiple.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err_resp.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/sram2tlul.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_rstsyn.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_gating.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_intr_hw.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_arbiter_ppc.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_mux2.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_inverter.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_irq_ctrl.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_rlight.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_tlul_mux.sv"
+      }
+    ],
+    "defines": {
+      "INIT_MEM_FILE": {
+        "_type": "Path",
+        "value": "sw_test_rvlab/build/sw.mem"
+      }
+    },
+    "include_dirs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc"
+      }
+    ],
+    "xcis": [],
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975649.890478
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975649.898692
+    }
+  }
+}

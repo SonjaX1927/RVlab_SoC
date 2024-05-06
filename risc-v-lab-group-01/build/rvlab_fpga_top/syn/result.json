@@ -1,0 +1,43 @@
+{
+  "block_id": "rvlab_fpga_top",
+  "task_id": "syn",
+  "data": {
+    "dcp": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.dcp"
+    },
+    "verilog_funcsim": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.funcsim.v"
+    },
+    "report_utilization": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.utilization.txt"
+    },
+    "report_timing_summary": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.timing_summary.txt"
+    },
+    "report_qor_assessment": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.qor_assessment.txt"
+    },
+    "report_methodology": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.methodology.txt"
+    },
+    "report_drc": {
+      "_type": "Path",
+      "value": "rvlab_fpga_top/syn/rvlab_fpga_top.drc.txt"
+    },
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975886.400473
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714976129.91888
+    }
+  }
+}

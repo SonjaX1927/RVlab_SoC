@@ -1,0 +1,53 @@
+{
+  "block_id": "reggen",
+  "task_id": "generate",
+  "data": {
+    "c_include_dir": {
+      "_type": "Path",
+      "value": "reggen/generate/include"
+    },
+    "rtl_srcs": [
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_top.sv"
+      }
+    ],
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975137.304982
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975137.548249
+    }
+  }
+}

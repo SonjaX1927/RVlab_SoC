@@ -1,0 +1,27 @@
+{
+  "block_id": "sw_rlight",
+  "task_id": "build",
+  "data": {
+    "elf": {
+      "_type": "Path",
+      "value": "sw_rlight/build/sw.elf"
+    },
+    "mem": {
+      "_type": "Path",
+      "value": "sw_rlight/build/sw.mem"
+    },
+    "disasm": {
+      "_type": "Path",
+      "value": "sw_rlight/build/sw.disasm"
+    },
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975141.406322
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975141.610983
+    }
+  }
+}

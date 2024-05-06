@@ -1,0 +1,690 @@
+{
+  "block_id": "srcs",
+  "task_id": "srcs",
+  "data": {
+    "design_srcs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc/prim_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/pkg/top_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/pkg/prim_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/pkg/ibex_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/pkg/tlul_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/pkg/dm_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/pkg/rvlab_tap_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_main_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_main.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/tl_peri_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "xbar/generate/xbar_peri.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/ddr_ctrl_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/rv_timer_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/student_dma_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_pkg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "reggen/generate/rtl/regdemo_reg_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_prefetch_buffer.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_fetch_fifo.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_register_file.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_controller.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_fast.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_pmp.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core_tracing.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_ex_block.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc/prim_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/timer_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/rv_timer.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_opendrain.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_fpga_top.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_bram_main.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_core.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_tlul_ddr.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_cpu.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_regdemo.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_clkmgr.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/tlul_adapter_host.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_cdc.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_debug.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rv_dm.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/debug_rom.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_jtag.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_async.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_assert_multiple.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err_resp.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/sram2tlul.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_assert.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_rstsyn.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_gating.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_intr_hw.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_arbiter_ppc.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_mux2.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_clock_inverter.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_irq_ctrl.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_rlight.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_tlul_mux.sv"
+      }
+    ],
+    "defines": {
+      "INIT_MEM_FILE": {
+        "_type": "Path",
+        "value": "sw_test_rvlab/build/sw.mem"
+      },
+      "WITH_EXT_DRAM": "1"
+    },
+    "include_dirs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/inc"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/example_design/sim"
+      }
+    ],
+    "fv_srcs": [
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/student_rlight_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/tlul_test_host.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_board.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/jtag_master.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_tests.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/student_tlul_mux_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/system_tb.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/rvlab_test_utils.sv"
+      },
+      {
+        "_type": "Path",
+        "value": "/usr/xilinx/2021.2/Vivado/2021.2/data/verilog/src/glbl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/rvlab_mig.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/rvlab_mig_mig_sim.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ecc/mig_7series_v4_2_ecc_merge_enc.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ecc/mig_7series_v4_2_ecc_gen.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ecc/mig_7series_v4_2_ecc_dec_fix.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ecc/mig_7series_v4_2_fi_xor.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ecc/mig_7series_v4_2_ecc_buf.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ui/mig_7series_v4_2_ui_cmd.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ui/mig_7series_v4_2_ui_wr_data.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ui/mig_7series_v4_2_ui_rd_data.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ui/mig_7series_v4_2_ui_top.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_edge.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_pd.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_oclkdelay_cal.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_cntlr.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_tap_base.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_edge_store.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_if_post_fifo.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_top.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_skip_calib_tap.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_lim.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_po_cntlr.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_prbs_rdlvl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrlvl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_top.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_meta.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_poc_cc.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrlvl_off_delay.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_samp.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_data.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ocd_mux.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_ck_addr_cmd_delay.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ip_top/mig_7series_v4_2_memc_ui_top_std.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/ip_top/mig_7series_v4_2_mem_intfc.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_rank_mach.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_cntrl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_rank_cntrl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_arb_mux.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_common.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_arb_select.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_mach.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_compare.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_col_mach.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_mc.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_bank_state.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/controller/mig_7series_v4_2_rank_common.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/clocking/mig_7series_v4_2_tempmon.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/clocking/mig_7series_v4_2_clk_ibuf.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v"
+      },
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig/example_design/sim/ddr3_model.sv"
+      }
+    ],
+    "xcis": [
+      {
+        "_type": "Path",
+        "value": "rvlab_mig/generate/rvlab_mig/rvlab_mig.xci"
+      }
+    ],
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975886.388573
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975886.388732
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "block_id": "sw_test_rvlab",
+  "task_id": "build",
+  "data": {
+    "elf": {
+      "_type": "Path",
+      "value": "sw_test_rvlab/build/sw.elf"
+    },
+    "mem": {
+      "_type": "Path",
+      "value": "sw_test_rvlab/build/sw.mem"
+    },
+    "disasm": {
+      "_type": "Path",
+      "value": "sw_test_rvlab/build/sw.disasm"
+    },
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975649.362238
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975649.887056
+    }
+  }
+}

@@ -1,0 +1,59 @@
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date         : Mon May  6 08:15:13 2024
+| Host         : msclab running 64-bit CentOS Linux release 7.9.2009 (Core)
+| Command      : report_qor_assessment -file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.qor_assessment.txt
+| Design       : rvlab_fpga_top
+| Device       : xc7a200tsbg484-1
+| Speed File   : -1
+| Design State : Optimized
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report QoR Assessment
+
+Table of Contents
+-----------------
+1. Overall Assessment Summary
+2. QoR Assessment Details
+3. Methodology Check Details
+4. ML Strategy Availability
+
+1. Overall Assessment Summary
+-----------------------------
+
++----------------------+---------------------------------------------------------------------------------------------+
+| QoR Assessment Score | 2 - Implementation may complete. Timing will not meet                                       |
++----------------------+---------------------------------------------------------------------------------------------+
+| Flow Guidance        | Run report_qor_suggestions to generate suggestions that will directly improve REVIEW items. |
++----------------------+---------------------------------------------------------------------------------------------+
+
+
+2. QoR Assessment Details
+-------------------------
+
++-------------+-----------+----------+------+-----------+--------+
+| Name        | Threshold | Actual   | Used | Available | Status |
++-------------+-----------+----------+------+-----------+--------+
+| Utilization |           |          |      |           |     OK |
+| Clocking    |           |          |      |           |     OK |
+| Congestion  |           |          |      |           |     OK |
+| Timing      |           |          |      |           |        |
+|   WNS       |    -0.100 |   -1.302 |   -  |        -  | REVIEW |
+|   TNS       |    -0.100 | -233.796 |   -  |        -  | REVIEW |
++-------------+-----------+----------+------+-----------+--------+
+
+
+3. Methodology Check Details
+----------------------------
+
++----+-------------+-------------+----------------------+
+| ID | Description | Criticality | Number of Violations |
++----+-------------+-------------+----------------------+
+
+
+4. ML Strategy Availability
+---------------------------
+
+ML Strategy is not supported for 7-series architectures.
+

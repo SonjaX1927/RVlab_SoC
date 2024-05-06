@@ -1,0 +1,1691 @@
+#-----------------------------------------------------------
+# Vivado v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Mon May  6 08:11:27 2024
+# Process ID: 292580
+# Current directory: /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn
+# Command line: vivado -mode tcl -nojournal -source /home/rvlab/opt/python/lib/python3.10/site-packages/notcl/notcl.tcl
+# Log file: /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/vivado.log
+# Journal file: 
+# Running On: msclab, OS: Linux, CPU Frequency: 3000.000 MHz, CPU Physical cores: 32, Host memory: 404094 MB
+#-----------------------------------------------------------
+source /home/rvlab/opt/python/lib/python3.10/site-packages/notcl/notcl.tcl
+# namespace eval NoTcl {
+#     global env
+# 
+#     set fn_tcl2py $env(NOTCL_PIPE_TCL2PY)
+#     set fn_py2tcl $env(NOTCL_PIPE_PY2TCL)
+# 
+#     if $env(NOTCL_DEBUG_TCL) {
+#         proc log {message} {
+#             puts "\[notcl\] Tcl: $message"
+#         }
+#     } else {
+#         proc log {message} {}
+#     }
+# 
+#     variable base64_impl
+#     variable fn_py2tcl
+#     variable fn_tcl2py
+# 
+#     if {[catch {package require base64}]} {
+#         # Error thrown - package not found.
+#         log "Using built-in base64 implementation."
+#         set base64_impl builtin
+#     } else {
+#         log "Using base64 package."
+#         set base64_impl package
+#     }
+# 
+#     proc safe_obj_to_str {obj} {
+#         # This call to "format" copies the string value of data_in to data_in-str.
+#         # It prevents loss of opaque reference data due to conversion of
+#         # internal representation triggered by "binary encode" command.
+#         # To makes sure that this is not optimized away, we temporarily append
+#         # and then remove an 'X' character from the string.
+#         # (See also: "shimmering")
+# 
+#         set str [format "%sX" $obj]
+#         set str [string range $str 0 [expr [string length $str] - 2]]
+#         return $str
+#     }
+# 
+#     proc b64encode {data_in} {
+#         variable base64_impl
+# 
+#         set data_in [safe_obj_to_str $data_in]
+#         
+#         # -maxlen 0 prevents line wrapping by base64::encode, which would mess everything up.
+#         switch $base64_impl {
+#             package {
+#                 return [base64::encode -maxlen 0 $data_in]
+#             }
+#             builtin {
+#                 return [binary encode base64 -maxlen 0 $data_in]
+#             }
+#             default {
+#                 return -code error "no base64 implementation selected"
+#             }
+#         }
+#     }
+# 
+#     proc b64decode {data_in} {
+#         variable base64_impl
+#         switch $base64_impl {
+#             package {
+#                 return [base64::decode $data_in]
+#             }
+#             builtin {
+#                 return [binary decode base64 $data_in]
+#             }
+#             default {
+#                 return -code error "no base64 implementation selected"
+#             }
+#         }
+#     }
+# 
+#     proc sendmsg {msg} {
+#         variable fn_tcl2py
+#         
+#         log "sendmsg: opening tcl2py pipe $fn_tcl2py to send message..."
+#         set pipe [open $fn_tcl2py w]
+#         set first 1
+#         dict for {key value} $msg {
+#             if { ! $first } {
+#                 puts $pipe {}
+#             }
+#             puts $pipe $key
+#             puts -nonewline $pipe [NoTcl::b64encode $value]
+#             set first 0
+#         }
+#         flush $pipe
+#         close $pipe
+#         log "sendmsg: message sent, tcl2py pipe $fn_tcl2py closed."
+#     }
+# 
+#     proc recvmsg {} {
+#         variable fn_py2tcl
+#         
+#         log "recvmsg: opening py2tcl pipe $fn_py2tcl to receive message..."
+#         set pipe [open $fn_py2tcl r]
+#         set msg {}
+#         while { ! [eof $pipe]} {
+#             set key [gets $pipe]
+#             set value [NoTcl::b64decode [gets $pipe]]
+#             dict append msg $key $value
+#         }
+#         close $pipe
+#         log "recvmsg: message received, py2tcl pipe $fn_py2tcl closed."
+#         return $msg
+#     }
+# 
+#     proc send_hello {} {
+#         set s_msg {}
+#         dict append s_msg "class" "TclHello"
+#         dict append s_msg "patchlevel" [info patchlevel]
+#         dict append s_msg "commands" [info commands]
+#         dict append s_msg "globals" [info globals]
+#         dict append s_msg "nameofexecutable" [info nameofexecutable]
+#         sendmsg $s_msg
+#     }
+# 
+#     proc send_proc_result {err_code cmd_idx result} {
+#         set s_msg {}
+#         dict append s_msg "class" "TclProcedureResult"
+#         dict append s_msg "err_code" $err_code
+#         dict append s_msg "cmd_idx" $cmd_idx
+#         dict append s_msg "result" $result
+#         sendmsg $s_msg
+#     }
+# 
+#     # The results are stored as $res($cmd_idx) array values in order to ensure that
+#     # Synopsys' collection handles are no automatically deleted / garbage collected.
+#     # Collection handles become invalid when no Tcl variables contain the reference
+#     # ("_selX") anymore. Obviously, this does not work with Python variables.
+#     variable cmd_idx
+#     variable cmd_results ;# This is an array
+#     
+#     set cmd_idx 0
+# 
+#     proc command_present {cmd} {
+#         return [expr [lsearch [info commands $cmd] $cmd] >= 0]
+#     }
+# 
+#     proc comm_loop {} {
+#         variable cmd_idx
+#         variable cmd_results
+# 
+#         set repr_supported [command_present "::tcl::unsupported::representation"]
+# 
+#         set pyexit_received 0
+#         while { ! $pyexit_received } {
+#             set r_msg [NoTcl::recvmsg]
+#             set class [dict get $r_msg class]
+#             switch $class {
+#                 PyProcedureCall {
+#                     set cmd [dict get $r_msg command]
+# 
+#                     log "Executing command: $cmd"
+# 
+#                     set err_code [catch $cmd cmd_results($cmd_idx)]
+# 
+#                     # This should output something like: "Command finished, return value is a pure string with a refcount[...]"
+#                     # Unfortunately, this is not always supported.
+#                     #log "Command finished, return [::tcl::unsupported::representation $cmd_results($cmd_idx)]" 
+#                     if { $repr_supported } {
+#                         log "Command finished, returned [::tcl::unsupported::representation $cmd_results($cmd_idx)]."
+#                     } else {
+#                         log [format "Command finished, returned \"%s\"." $cmd_results($cmd_idx)]
+#                     }
+# 
+#                     send_proc_result $err_code $cmd_idx $cmd_results($cmd_idx)
+#                     set cmd_idx [expr $cmd_idx + 1]
+#                 }
+#                 PyExit {
+#                     set pyexit_received 1
+#                     set pyexit_quit [dict get $r_msg quit]
+#                 }
+#                 default {
+#                     puts "ERROR: Unknown message received"
+#                     set pyexit_received 1
+#                 }
+#             }
+#         }
+#         return $pyexit_quit
+#     }
+# 
+#     proc main {} {
+#         NoTcl::send_hello
+#         if { [ NoTcl::comm_loop ] } {
+#             exit
+#         }
+#     }
+# }
+# NoTcl::main
+INFO: [Coretcl 2-1500] The part has been set to 'xc7a200tsbg484-1' for the current project only. Run set_part -help for more details. To evaluate different speed grades in the current design, use the set_speed_grade command, or use the open_checkpoint -part command to change the part used by an existing checkpoint design.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/usr/xilinx/2021.2/Vivado/2021.2/data/ip'.
+INFO: [IP_Flow 19-7005] Skipping external file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/ip/mig_a.prj
+Command: synth_design -top rvlab_fpga_top -part xc7a200tsbg484-1 -directive PerformanceOptimized -flatten_hierarchy rebuilt -verilog_define INIT_MEM_FILE=/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/sw_test_rvlab/build/sw.mem -verilog_define WITH_EXT_DRAM=1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tsbg484-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 293780
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2880.746 ; gain = 0.000 ; free physical = 282807 ; free virtual = 726643
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'rvlab_fpga_top' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_fpga_top.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_clkmgr' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_clkmgr.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'BUFG' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:1083]
+INFO: [Synth 8-6155] done synthesizing module 'BUFG' (1#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:1083]
+INFO: [Synth 8-6157] synthesizing module 'MMCME2_BASE' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:63630]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT_F bound to: 12.000000 - type: double 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKIN1_PERIOD bound to: 10.000000 - type: double 
+	Parameter CLKOUT0_DIVIDE_F bound to: 24.000000 - type: double 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT1_DIVIDE bound to: 6 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT1_PHASE bound to: 90.000000 - type: double 
+	Parameter CLKOUT2_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT2_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT2_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT3_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT3_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT3_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT4_CASCADE bound to: FALSE - type: string 
+	Parameter CLKOUT4_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT4_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT4_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT5_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT5_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT5_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT6_DIVIDE bound to: 20 - type: integer 
+	Parameter CLKOUT6_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT6_PHASE bound to: 0.000000 - type: double 
+	Parameter DIVCLK_DIVIDE bound to: 1 - type: integer 
+	Parameter REF_JITTER1 bound to: 0.000000 - type: double 
+	Parameter STARTUP_WAIT bound to: FALSE - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'MMCME2_BASE' (2#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:63630]
+INFO: [Synth 8-6157] synthesizing module 'BUFGCE' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:1093]
+INFO: [Synth 8-6155] done synthesizing module 'BUFGCE' (3#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:1093]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_clkmgr' (4#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_clkmgr.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'FDRE' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:27837]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'FDRE' (5#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:27837]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_tlul_ddr' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_tlul_ddr.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_mig' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.Xil/Vivado-292580-msclab/realtime/rvlab_mig_stub.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_mig' (6#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.Xil/Vivado-292580-msclab/realtime/rvlab_mig_stub.v:5]
+INFO: [Synth 8-6157] synthesizing module 'ddr_ctrl_reg_top' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/ddr_ctrl_reg_top.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_reg' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+	Parameter RegAw bound to: 32'sb00000000000000000000000000000100 
+	Parameter RegDw bound to: 32'sb00000000000000000000000000100000 
+INFO: [Synth 8-6157] synthesizing module 'tlul_err' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err.sv:6]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err.sv:51]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_err' (7#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err.sv:6]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_reg' (8#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg_ext' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+	Parameter DW bound to: 32'b00000000000000000000000000001100 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg_ext' (9#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg_ext__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+	Parameter DW bound to: 32'b00000000000000000000000000000001 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg_ext__parameterized0' (9#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000000001 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg' (10#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/ddr_ctrl_reg_top.sv:186]
+INFO: [Synth 8-6155] done synthesizing module 'ddr_ctrl_reg_top' (11#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/ddr_ctrl_reg_top.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'prim_flop_2sync' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+	Parameter Width bound to: 32'sb00000000000000000000000000000001 
+INFO: [Synth 8-6155] done synthesizing module 'prim_flop_2sync' (12#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_flop_2sync__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+	Parameter Width bound to: 32'sb00000000000000000000000000001100 
+INFO: [Synth 8-6155] done synthesizing module 'prim_flop_2sync__parameterized0' (12#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_async' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000010011010 
+	Parameter Depth bound to: 32'b00000000000000000000000000000011 
+INFO: [Synth 8-6157] synthesizing module 'prim_flop_2sync__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+	Parameter Width bound to: 32'sb00000000000000000000000000000011 
+INFO: [Synth 8-6155] done synthesizing module 'prim_flop_2sync__parameterized1' (12#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_flop_2sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_async' (13#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_async__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000010000000 
+	Parameter Depth bound to: 32'b00000000000000000000000000000011 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_async__parameterized0' (13#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_tlul_ddr' (14#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_tlul_ddr.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'iocell_opendrain' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_opendrain.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'IOBUF' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:59735]
+	Parameter DRIVE bound to: 4 - type: integer 
+	Parameter IBUF_LOW_PWR bound to: TRUE - type: string 
+	Parameter IOSTANDARD bound to: DEFAULT - type: string 
+	Parameter SLEW bound to: SLOW - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IOBUF' (15#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:59735]
+INFO: [Synth 8-6155] done synthesizing module 'iocell_opendrain' (16#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_opendrain.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'IBUFDS' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:55219]
+	Parameter IOSTANDARD bound to: TMDS_33 - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IBUFDS' (17#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:55219]
+INFO: [Synth 8-6157] synthesizing module 'OBUFDS' [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:71235]
+	Parameter IOSTANDARD bound to: TMDS_33 - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'OBUFDS' (18#1) [/usr/xilinx/2021.2/Vivado/2021.2/scripts/rt/data/unisim_comp.v:71235]
+INFO: [Synth 8-6157] synthesizing module 'iocell_bidir' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'iocell_bidir' (19#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'iocell_bidir__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv:1]
+	Parameter Width bound to: 32'sb00000000000000000000000000001000 
+INFO: [Synth 8-6155] done synthesizing module 'iocell_bidir__parameterized0' (19#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/iocell_bidir.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_core' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_core.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'xbar_main' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/xbar/generate/xbar_main.sv:46]
+INFO: [Synth 8-6157] synthesizing module 'tlul_socket_1n' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+	Parameter N bound to: 32'b00000000000000000000000000000100 
+	Parameter HReqDepth bound to: 4'b0000 
+	Parameter HRspDepth bound to: 4'b0000 
+	Parameter DReqDepth bound to: 16'b0000000000000000 
+	Parameter DRspDepth bound to: 16'b0000000000000000 
+INFO: [Synth 8-6157] synthesizing module 'tlul_fifo_sync' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+	Parameter ReqPass bound to: 32'b00000000000000000000000000000001 
+	Parameter RspPass bound to: 32'b00000000000000000000000000000001 
+	Parameter ReqDepth bound to: 32'b00000000000000000000000000000000 
+	Parameter RspDepth bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001100101 
+	Parameter Pass bound to: 1'b1 
+	Parameter Depth bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync' (20#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001000001 
+	Parameter Pass bound to: 1'b1 
+	Parameter Depth bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized0' (20#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_fifo_sync' (21#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+INFO: [Synth 8-6157] synthesizing module 'tlul_fifo_sync__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+	Parameter ReqPass bound to: 1 - type: integer 
+	Parameter RspPass bound to: 1 - type: integer 
+	Parameter ReqDepth bound to: 0 - type: integer 
+	Parameter RspDepth bound to: 0 - type: integer 
+	Parameter SpareReqW bound to: 32'b00000000000000000000000000000011 
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001100111 
+	Parameter Pass bound to: 1'b1 
+	Parameter Depth bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized1' (21#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_fifo_sync__parameterized0' (21#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+INFO: [Synth 8-6157] synthesizing module 'tlul_err_resp' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err_resp.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_err_resp' (22#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_err_resp.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_socket_1n' (23#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+INFO: [Synth 8-6157] synthesizing module 'tlul_socket_m1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv:23]
+	Parameter M bound to: 32'b00000000000000000000000000000100 
+	Parameter HReqDepth bound to: 16'b0000000000000000 
+	Parameter HRspDepth bound to: 16'b0000000000000000 
+	Parameter DReqDepth bound to: 4'b0000 
+	Parameter DRspDepth bound to: 4'b0000 
+INFO: [Synth 8-6157] synthesizing module 'prim_arbiter_ppc' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_arbiter_ppc.sv:23]
+	Parameter N bound to: 32'b00000000000000000000000000000100 
+	Parameter DW bound to: 32'b00000000000000000000000001100110 
+INFO: [Synth 8-6155] done synthesizing module 'prim_arbiter_ppc' (24#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_arbiter_ppc.sv:23]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_socket_m1' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv:23]
+INFO: [Synth 8-6157] synthesizing module 'tlul_socket_m1__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv:23]
+	Parameter M bound to: 32'b00000000000000000000000000000100 
+	Parameter HReqPass bound to: 4'b0000 
+	Parameter HRspPass bound to: 4'b0000 
+	Parameter DReqPass bound to: 1'b0 
+	Parameter DRspPass bound to: 1'b0 
+INFO: [Synth 8-6157] synthesizing module 'tlul_fifo_sync__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+	Parameter ReqPass bound to: 32'b00000000000000000000000000000000 
+	Parameter RspPass bound to: 32'b00000000000000000000000000000000 
+	Parameter ReqDepth bound to: 32'b00000000000000000000000000000010 
+	Parameter RspDepth bound to: 32'b00000000000000000000000000000010 
+	Parameter SpareReqW bound to: 32'b00000000000000000000000000000001 
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized2' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001100101 
+	Parameter Pass bound to: 1'b0 
+	Parameter Depth bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized2' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized3' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001000001 
+	Parameter Pass bound to: 1'b0 
+	Parameter Depth bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized3' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_fifo_sync__parameterized1' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_socket_m1__parameterized0' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_m1.sv:23]
+INFO: [Synth 8-6157] synthesizing module 'tlul_socket_1n__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+	Parameter N bound to: 32'b00000000000000000000000000000100 
+	Parameter HReqPass bound to: 1'b0 
+	Parameter HRspPass bound to: 1'b0 
+	Parameter DReqPass bound to: 4'b0000 
+	Parameter DRspPass bound to: 4'b0000 
+INFO: [Synth 8-6157] synthesizing module 'tlul_fifo_sync__parameterized2' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+	Parameter ReqPass bound to: 0 - type: integer 
+	Parameter RspPass bound to: 0 - type: integer 
+	Parameter ReqDepth bound to: 2 - type: integer 
+	Parameter RspDepth bound to: 2 - type: integer 
+	Parameter SpareReqW bound to: 32'b00000000000000000000000000000011 
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized4' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000001100111 
+	Parameter Pass bound to: 1'b0 
+	Parameter Depth bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized4' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_fifo_sync__parameterized2' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_socket_1n__parameterized0' (25#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+INFO: [Synth 8-6155] done synthesizing module 'xbar_main' (26#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/xbar/generate/xbar_main.sv:46]
+INFO: [Synth 8-6157] synthesizing module 'xbar_peri' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/xbar/generate/xbar_peri.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'tlul_socket_1n__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+	Parameter N bound to: 32'b00000000000000000000000000000101 
+	Parameter HReqDepth bound to: 4'b0000 
+	Parameter HRspDepth bound to: 4'b0000 
+	Parameter DReqDepth bound to: 20'b00000000000000000000 
+	Parameter DRspDepth bound to: 20'b00000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_socket_1n__parameterized1' (26#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_socket_1n.sv:37]
+INFO: [Synth 8-6155] done synthesizing module 'xbar_peri' (27#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/xbar/generate/xbar_peri.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_cpu' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_cpu.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'ibex_core' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core.sv:13]
+	Parameter PMPEnable bound to: 1'b0 
+	Parameter RV32E bound to: 1'b0 
+	Parameter RV32M bound to: 1'b1 
+	Parameter MultiplierImplementation bound to: slow - type: string 
+	Parameter DmHaltAddr bound to: 503318528 - type: integer 
+	Parameter DmExceptionAddr bound to: 503318536 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'ibex_if_stage' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv:12]
+	Parameter DmHaltAddr bound to: 503318528 - type: integer 
+	Parameter DmExceptionAddr bound to: 503318536 - type: integer 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv:107]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv:107]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv:118]
+INFO: [Synth 8-6157] synthesizing module 'ibex_prefetch_buffer' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_prefetch_buffer.sv:12]
+INFO: [Synth 8-6157] synthesizing module 'ibex_fetch_fifo' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_fetch_fifo.sv:12]
+	Parameter NUM_REQS bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'ibex_fetch_fifo' (28#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_fetch_fifo.sv:12]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_prefetch_buffer' (29#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_prefetch_buffer.sv:12]
+INFO: [Synth 8-6157] synthesizing module 'ibex_compressed_decoder' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:13]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:39]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:39]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:42]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:42]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:83]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:83]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:121]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:121]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:139]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:139]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:205]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:205]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_compressed_decoder' (30#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_compressed_decoder.sv:13]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_if_stage' (31#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_if_stage.sv:12]
+INFO: [Synth 8-6157] synthesizing module 'ibex_id_stage' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:16]
+	Parameter RV32E bound to: 1'b0 
+	Parameter RV32M bound to: 1'b1 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:231]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:231]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:246]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:272]
+INFO: [Synth 8-6157] synthesizing module 'ibex_register_file' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_register_file.sv:14]
+	Parameter RV32E bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'ibex_register_file' (32#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_register_file.sv:14]
+INFO: [Synth 8-6157] synthesizing module 'ibex_decoder' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:17]
+	Parameter RV32E bound to: 1'b0 
+	Parameter RV32M bound to: 1'b1 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:216]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:268]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:312]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:336]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:378]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:378]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:417]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:502]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:536]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:578]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_decoder' (33#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_decoder.sv:17]
+INFO: [Synth 8-6157] synthesizing module 'ibex_controller' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_controller.sv:9]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_controller.sv:274]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_controller' (34#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_controller.sv:9]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:549]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:549]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:555]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_id_stage' (35#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_id_stage.sv:16]
+INFO: [Synth 8-6157] synthesizing module 'ibex_ex_block' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_ex_block.sv:11]
+	Parameter RV32M bound to: 1'b1 
+	Parameter MultiplierImplementation bound to: slow - type: string 
+INFO: [Synth 8-6157] synthesizing module 'ibex_multdiv_slow' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:11]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:66]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:77]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:165]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:167]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:216]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:237]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:262]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_multdiv_slow' (36#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_multdiv_slow.sv:11]
+INFO: [Synth 8-6157] synthesizing module 'ibex_alu' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:9]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:47]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:127]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:168]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:188]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_alu' (37#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_alu.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_ex_block' (38#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_ex_block.sv:11]
+INFO: [Synth 8-6157] synthesizing module 'ibex_load_store_unit' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:12]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:100]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:100]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:103]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:103]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:111]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:111]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:123]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:123]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:137]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:137]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:157]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:157]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:206]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:206]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:221]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:221]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:260]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:260]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:299]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:299]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:332]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_load_store_unit' (39#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_load_store_unit.sv:12]
+INFO: [Synth 8-6157] synthesizing module 'ibex_cs_registers' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:12]
+	Parameter DbgTriggerEn bound to: 1'b0 
+	Parameter MHPMCounterNum bound to: 32'b00000000000000000000000000000000 
+	Parameter MHPMCounterWidth bound to: 32'b00000000000000000000000000101000 
+	Parameter PMPEnable bound to: 1'b0 
+	Parameter PMPGranularity bound to: 32'b00000000000000000000000000000000 
+	Parameter PMPNumRegions bound to: 32'b00000000000000000000000000000100 
+	Parameter RV32E bound to: 1'b0 
+	Parameter RV32M bound to: 1'b1 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:252]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:441]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:541]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:544]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:611]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:611]
+WARNING: [Synth 8-3936] Found unconnected internal register 'mhpmcounter_incr_reg' and it is trimmed from '32' to '3' bits. [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:856]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_cs_registers' (40#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_cs_registers.sv:12]
+INFO: [Synth 8-6155] done synthesizing module 'ibex_core' (41#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/ibex/ibex_core.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'tlul_fifo_sync__parameterized3' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+	Parameter ReqPass bound to: -1 - type: integer 
+	Parameter RspPass bound to: -1 - type: integer 
+	Parameter ReqDepth bound to: 32'b00000000000000000000000000000000 
+	Parameter RspDepth bound to: 32'b00000000000000000000000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_fifo_sync__parameterized3' (41#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_fifo_sync.sv:9]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_cpu' (42#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_cpu.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_bram_main' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_bram_main.sv:1]
+INFO: [Synth 8-3876] $readmem data file '/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/sw_test_rvlab/build/sw.mem' is read successfully [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_bram_main.sv:71]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_sram' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv:12]
+	Parameter SramAw bound to: 32'sb00000000000000000000000000010000 
+	Parameter SramDw bound to: 32'sb00000000000000000000000000100000 
+	Parameter Outstanding bound to: 32'sb00000000000000000000000000000001 
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized5' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000000001101 
+	Parameter Pass bound to: 1'b0 
+	Parameter Depth bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized5' (42#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized6' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000000100001 
+	Parameter Pass bound to: 1'b1 
+	Parameter Depth bound to: 32'b00000000000000000000000000000001 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized6' (42#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_sram' (43#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv:12]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_bram_main' (44#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_bram_main.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_debug' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_debug.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_tap' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:19]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:169]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:190]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:243]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:243]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_tap' (45#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_tap.sv:19]
+INFO: [Synth 8-6157] synthesizing module 'rv_dm' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rv_dm.sv:13]
+	Parameter NrHarts bound to: 32'sb00000000000000000000000000000001 
+INFO: [Synth 8-6157] synthesizing module 'dm_csrs' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:18]
+	Parameter NrHarts bound to: 32'b00000000000000000000000000000001 
+	Parameter BusWidth bound to: 32'b00000000000000000000000000100000 
+	Parameter SelectableHarts bound to: 1'b1 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:285]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:358]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_sync__parameterized7' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000000100000 
+	Parameter Pass bound to: 1'b0 
+	Parameter Depth bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_sync__parameterized7' (45#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv:7]
+WARNING: [Synth 8-5858] RAM hartinfo_aligned_reg from Abstract Data Type (record/struct) for this pattern/configuration is not supported. This will most likely be implemented in registers
+WARNING: [Synth 8-3936] Found unconnected internal register 'havereset_d_aligned_reg' and it is trimmed from '2' to '1' bits. [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:198]
+WARNING: [Synth 8-7137] Register cmd_valid_q_reg in module dm_csrs has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:543]
+INFO: [Synth 8-6155] done synthesizing module 'dm_csrs' (46#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_csrs.sv:18]
+INFO: [Synth 8-6157] synthesizing module 'dm_sba' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv:18]
+	Parameter BusWidth bound to: 32'b00000000000000000000000000100000 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv:80]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv:99]
+INFO: [Synth 8-6155] done synthesizing module 'dm_sba' (47#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_sba.sv:18]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_host' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/tlul_adapter_host.sv:8]
+	Parameter AW bound to: 32'b00000000000000000000000000100000 
+	Parameter DW bound to: 32'b00000000000000000000000000100000 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_host' (48#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/tlul_adapter_host.sv:8]
+INFO: [Synth 8-6157] synthesizing module 'dm_mem' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:19]
+	Parameter NrHarts bound to: 32'b00000000000000000000000000000001 
+	Parameter BusWidth bound to: 32'b00000000000000000000000000100000 
+	Parameter SelectableHarts bound to: 1'b1 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:138]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:138]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:200]
+INFO: [Synth 8-226] default block is never used [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:200]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:262]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:292]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:370]
+INFO: [Synth 8-6157] synthesizing module 'debug_rom' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/debug_rom.sv:17]
+INFO: [Synth 8-6155] done synthesizing module 'debug_rom' (49#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/debug_rom.sv:17]
+WARNING: [Synth 8-3936] Found unconnected internal register 'resuming_d_aligned_reg' and it is trimmed from '2' to '1' bits. [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:112]
+WARNING: [Synth 8-3936] Found unconnected internal register 'halted_d_aligned_reg' and it is trimmed from '2' to '1' bits. [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:110]
+INFO: [Synth 8-6155] done synthesizing module 'dm_mem' (50#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dm_mem.sv:19]
+INFO: [Synth 8-6157] synthesizing module 'dmi_jtag' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_jtag.sv:19]
+	Parameter IdcodeValue bound to: 1 - type: integer 
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_jtag.sv:98]
+INFO: [Synth 8-6157] synthesizing module 'dmi_cdc' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_cdc.sv:19]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_async__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000000101001 
+	Parameter Depth bound to: 32'b00000000000000000000000000000100 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_async__parameterized1' (50#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_fifo_async__parameterized2' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+	Parameter Width bound to: 32'b00000000000000000000000000100010 
+	Parameter Depth bound to: 32'b00000000000000000000000000000100 
+INFO: [Synth 8-6155] done synthesizing module 'prim_fifo_async__parameterized2' (50#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_fifo_async.sv:7]
+INFO: [Synth 8-6155] done synthesizing module 'dmi_cdc' (51#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_cdc.sv:19]
+INFO: [Synth 8-6155] done synthesizing module 'dmi_jtag' (52#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/dmi_jtag.sv:19]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_sram__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv:12]
+	Parameter SramAw bound to: 32'sb00000000000000000000000000011110 
+	Parameter SramDw bound to: 32'sb00000000000000000000000000100000 
+	Parameter Outstanding bound to: 32'sb00000000000000000000000000000001 
+	Parameter ByteAccess bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_sram__parameterized0' (52#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_sram.sv:12]
+INFO: [Synth 8-6155] done synthesizing module 'rv_dm' (53#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rv_dm.sv:13]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_debug' (54#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_dm/rvlab_debug.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rv_timer' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/rv_timer.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_intr_hw' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_intr_hw.sv:10]
+	Parameter Width bound to: 32'b00000000000000000000000000000001 
+INFO: [Synth 8-6155] done synthesizing module 'prim_intr_hw' (55#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_intr_hw.sv:10]
+INFO: [Synth 8-6157] synthesizing module 'timer_core' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/timer_core.sv:7]
+	Parameter N bound to: 32'sb00000000000000000000000000000001 
+INFO: [Synth 8-6155] done synthesizing module 'timer_core' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/timer_core.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'rv_timer_reg_top' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/rv_timer_reg_top.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_reg__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+	Parameter RegAw bound to: 32'sb00000000000000000000000000001001 
+	Parameter RegDw bound to: 32'sb00000000000000000000000000100000 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_reg__parameterized0' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized0' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000001100 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: 12'b000000000000 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized0' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000001000 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: 8'b00000001 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized1' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized2' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000100000 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized2' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized3' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000100000 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: -1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized3' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized4' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000000001 
+	Parameter SWACCESS bound to: W1C - type: string 
+	Parameter RESVAL bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized4' (56#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/rv_timer_reg_top.sv:431]
+INFO: [Synth 8-6155] done synthesizing module 'rv_timer_reg_top' (57#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/rv_timer_reg_top.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'rv_timer' (58#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rv_timer/rv_timer.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'rvlab_regdemo' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_regdemo.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'regdemo_reg_top' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/regdemo_reg_top.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg_ext__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+	Parameter DW bound to: 32'b00000000000000000000000000100000 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg_ext__parameterized1' (58#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg__parameterized5' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+	Parameter DW bound to: 32'sb00000000000000000000000000000101 
+	Parameter SWACCESS bound to: RW - type: string 
+	Parameter RESVAL bound to: 5'b00000 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg__parameterized5' (58#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg.sv:7]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/regdemo_reg_top.sv:212]
+INFO: [Synth 8-6155] done synthesizing module 'regdemo_reg_top' (59#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/regdemo_reg_top.sv:3]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_regdemo' (60#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_regdemo.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'student' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'student_rlight' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_rlight.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'student_rlight' (61#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_rlight.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'student_dma' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'student_dma_reg_top' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/student_dma_reg_top.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'tlul_adapter_reg__parameterized1' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+	Parameter RegAw bound to: 32'sb00000000000000000000000000000101 
+	Parameter RegDw bound to: 32'sb00000000000000000000000000100000 
+INFO: [Synth 8-6155] done synthesizing module 'tlul_adapter_reg__parameterized1' (61#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/tlul/tlul_adapter_reg.sv:9]
+INFO: [Synth 8-6157] synthesizing module 'prim_subreg_ext__parameterized2' [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+	Parameter DW bound to: 32'b00000000000000000000000000000010 
+INFO: [Synth 8-6155] done synthesizing module 'prim_subreg_ext__parameterized2' (61#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/prim/prim_subreg_ext.sv:7]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/student_dma_reg_top.sv:233]
+INFO: [Synth 8-6155] done synthesizing module 'student_dma_reg_top' (62#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/reggen/generate/rtl/student_dma_reg_top.sv:3]
+WARNING: [Synth 8-6014] Unused sequential element still_sending_reg was removed.  [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv:136]
+WARNING: [Synth 8-6014] Unused sequential element write_done_reg was removed.  [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv:140]
+INFO: [Synth 8-6155] done synthesizing module 'student_dma' (63#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student_dma.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'student' (64#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/student/student.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_core' (65#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_core.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'rvlab_fpga_top' (66#1) [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/rtl/rvlab_fpga/rvlab_fpga_top.sv:1]
+WARNING: [Synth 8-7129] Port clk_i in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port rst_ni in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_param][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_param][1] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_param][0] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][7] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][6] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][5] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][4] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][3] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][1] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_source][0] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][31] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][30] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][29] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][28] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][27] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][26] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][25] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][24] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][23] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][22] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][21] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][20] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][19] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][18] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][17] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][16] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][15] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][14] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][13] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][12] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][11] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][10] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][9] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][8] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][7] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][6] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][5] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][4] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][3] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_address][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][31] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][30] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][29] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][28] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][27] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][26] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][25] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][24] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][23] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][22] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][21] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][20] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][19] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][18] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][17] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][16] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][15] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][14] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][13] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][12] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][11] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][10] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][9] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][8] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][7] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][6] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][5] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][4] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][3] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][1] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_data][0] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][6] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][5] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][4] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][3] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][1] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][rsvd1][0] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity_en] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][7] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][6] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][5] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][4] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][3] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][2] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][1] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[a_user][parity][0] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_i[d_ready] in module tlul_err is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_opcode][2] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_opcode][1] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_opcode][0] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_param][2] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_param][1] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_param][0] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_size][1] in module student_dma is either unconnected or has no load
+WARNING: [Synth 8-7129] Port tl_host_i[d_size][0] in module student_dma is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2880.746 ; gain = 0.000 ; free physical = 283586 ; free virtual = 727424
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 2883.574 ; gain = 2.828 ; free physical = 283602 ; free virtual = 727440
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 2883.574 ; gain = 2.828 ; free physical = 283602 ; free virtual = 727440
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.31 ; elapsed = 00:00:00.31 . Memory (MB): peak = 2883.574 ; gain = 0.000 ; free physical = 283573 ; free virtual = 727411
+WARNING: [Netlist 29-345] The value of SIM_DEVICE on instance 'clkmgr_i/clkbuf_i' of type 'BUFGCE' is 'ULTRASCALE'; it is being changed to match the current FPGA architecture, '7SERIES'. For functional simulation to match hardware behavior, the value of SIM_DEVICE should be changed in the source netlist. 
+INFO: [Netlist 29-17] Analyzing 45 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc] for cell 'tlul_ddr_i/mig_i'
+Finished Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc] for cell 'tlul_ddr_i/mig_i'
+Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc]
+INFO: [Timing 38-2] Deriving generated clocks [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc:10]
+Finished Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/rvlab_fpga_top_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/rvlab_fpga_top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3047.219 ; gain = 0.000 ; free physical = 283406 ; free virtual = 727244
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 37 instances were transformed.
+  BUFGCE => BUFGCTRL: 1 instance 
+  IOBUF => IOBUF (IBUF, OBUFT): 35 instances
+  MMCME2_BASE => MMCME2_ADV: 1 instance 
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 3047.219 ; gain = 0.000 ; free physical = 283399 ; free virtual = 727237
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:20 ; elapsed = 00:00:20 . Memory (MB): peak = 3047.219 ; gain = 166.473 ; free physical = 283577 ; free virtual = 727415
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tsbg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:20 ; elapsed = 00:00:20 . Memory (MB): peak = 3047.219 ; gain = 166.473 ; free physical = 283576 ; free virtual = 727414
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 2).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 3).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[10]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 4).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[10]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 5).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[11]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 6).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[11]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 7).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[12]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 8).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[12]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 9).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[13]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 10).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[13]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 11).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[14]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 12).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[14]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 13).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 14).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 15).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 16).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 17).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[3]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 18).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[3]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 19).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[4]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 20).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[4]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 21).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[5]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 22).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[5]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 23).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[6]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 24).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[6]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 25).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[7]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 26).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[7]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 27).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[8]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 28).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[8]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 29).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_addr[9]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 30).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_addr[9]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 31).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ba[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 32).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ba[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 33).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ba[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 34).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ba[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 35).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ba[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 36).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ba[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 37).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_cas_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 38).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_cas_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 39).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ck_n[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 40).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ck_n[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 41).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ck_p[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 42).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ck_p[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 43).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_cke[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 44).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_cke[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 45).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dm[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 46).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dm[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 47).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dm[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 48).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dm[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 49).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 50).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 51).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[10]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 52).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[10]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 53).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[11]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 54).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[11]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 55).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[12]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 56).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[12]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 57).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[13]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 58).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[13]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 59).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[14]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 60).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[14]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 61).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[15]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 62).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[15]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 63).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 64).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 65).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 66).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[2]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 67).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[3]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 68).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[3]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 69).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[4]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 70).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[4]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 71).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[5]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 72).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[5]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 73).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[6]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 74).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[6]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 75).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[7]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 76).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[7]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 77).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[8]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 78).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[8]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 79).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dq[9]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 80).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dq[9]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 81).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dqs_n[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 82).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dqs_n[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 83).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dqs_n[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 84).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dqs_n[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 85).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dqs_p[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 86).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dqs_p[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 87).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_dqs_p[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 88).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_dqs_p[1]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 89).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_odt[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 90).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_odt[0]. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 91).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_ras_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 92).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_ras_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 93).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_reset_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 94).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_reset_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 95).
+Applied set_property IO_BUFFER_TYPE = NONE for ddr3_we_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 96).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for ddr3_we_n. (constraint file  /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/rvlab_mig_in_context.xdc, line 97).
+Applied set_property KEEP_HIERARCHY = SOFT for tlul_ddr_i/mig_i. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:21 . Memory (MB): peak = 3047.219 ; gain = 166.473 ; free physical = 283575 ; free virtual = 727413
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'ctrl_fsm_cs_reg' in module 'ibex_controller'
+INFO: [Synth 8-802] inferred FSM for state register 'md_state_q_reg' in module 'ibex_multdiv_slow'
+INFO: [Synth 8-802] inferred FSM for state register 'ls_fsm_cs_reg' in module 'ibex_load_store_unit'
+INFO: [Synth 8-802] inferred FSM for state register 'tap_state_q_reg' in module 'rvlab_tap'
+INFO: [Synth 8-802] inferred FSM for state register 'state_q_reg' in module 'dm_sba'
+INFO: [Synth 8-802] inferred FSM for state register 'state_q_reg' in module 'dm_mem'
+INFO: [Synth 8-802] inferred FSM for state register 'state_q_reg' in module 'dmi_jtag'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'student_rlight'
+INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'student_dma'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                   RESET |                             0000 |                             0000
+                BOOT_SET |                             0001 |                             0001
+             FIRST_FETCH |                             0010 |                             0100
+                  DECODE |                             0011 |                             0101
+                   FLUSH |                             0100 |                             0110
+            DBG_TAKEN_IF |                             0101 |                             1000
+            DBG_TAKEN_ID |                             0110 |                             1001
+              WAIT_SLEEP |                             0111 |                             0010
+                   SLEEP |                             1000 |                             0011
+               IRQ_TAKEN |                             1001 |                             0111
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'ctrl_fsm_cs_reg' using encoding 'sequential' in module 'ibex_controller'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 MD_IDLE |                              000 |                              000
+                MD_ABS_A |                              001 |                              001
+                MD_ABS_B |                              010 |                              010
+                 MD_COMP |                              011 |                              011
+                 MD_LAST |                              100 |                              100
+          MD_CHANGE_SIGN |                              101 |                              101
+               MD_FINISH |                              110 |                              110
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'md_state_q_reg' using encoding 'sequential' in module 'ibex_multdiv_slow'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                              000 |                              000
+            WAIT_GNT_MIS |                              001 |                              001
+         WAIT_RVALID_MIS |                              010 |                              010
+        WAIT_RVALID_DONE |                              011 |                              101
+                WAIT_GNT |                              100 |                              011
+             WAIT_RVALID |                              101 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'ls_fsm_cs_reg' using encoding 'sequential' in module 'ibex_load_store_unit'
+WARNING: [Synth 8-6841] Block RAM (mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (16) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute ram_decomp = power if BWWE is desired.)
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+             RunTestIdle |                 0000000000000001 |                             0001
+            SelectDrScan |                 0000000000000010 |                             0010
+            SelectIrScan |                 0000000000000100 |                             1001
+          TestLogicReset |                 0000000000001000 |                             0000
+               CaptureIr |                 0000000000010000 |                             1010
+                 ShiftIr |                 0000000000100000 |                             1011
+                 Exit1Ir |                 0000000001000000 |                             1100
+                 PauseIr |                 0000000010000000 |                             1101
+                 Exit2Ir |                 0000000100000000 |                             1110
+                UpdateIr |                 0000001000000000 |                             1111
+               CaptureDr |                 0000010000000000 |                             0011
+                 ShiftDr |                 0000100000000000 |                             0100
+                 Exit1Dr |                 0001000000000000 |                             0101
+                 PauseDr |                 0010000000000000 |                             0110
+                 Exit2Dr |                 0100000000000000 |                             0111
+                UpdateDr |                 1000000000000000 |                             1000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'tap_state_q_reg' using encoding 'one-hot' in module 'rvlab_tap'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    Idle |                              000 |                              000
+                    Read |                              001 |                              001
+                WaitRead |                              010 |                              011
+                   Write |                              011 |                              010
+               WaitWrite |                              100 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_q_reg' using encoding 'sequential' in module 'dm_sba'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    Idle |                               00 |                               00
+                  Resume |                               01 |                               10
+                      Go |                               10 |                               01
+            CmdExecuting |                               11 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_q_reg' using encoding 'sequential' in module 'dm_mem'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    Idle |                               00 |                              000
+                    Read |                               01 |                              001
+           WaitReadValid |                               10 |                              010
+                   Write |                               11 |                              011
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_q_reg' using encoding 'sequential' in module 'dmi_jtag'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    idle |                              001 |                               00
+                    swap |                              010 |                               01
+                   count |                              100 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'student_rlight'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                              000 |                          0000000
+          READ_DESC_SEND |                              001 |                          0000001
+          READ_DESC_RECV |                              010 |                          0000010
+          MEMSET_WRITING |                              011 |                          0000011
+        MEMSET_WAIT_RESP |                              100 |                          0000100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'current_state_reg' using encoding 'sequential' in module 'student_dma'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 3047.219 ; gain = 166.473 ; free physical = 283580 ; free virtual = 727414
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   64 Bit       Adders := 4     
+	   2 Input   34 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 8     
+	   2 Input   26 Bit       Adders := 1     
+	   2 Input   25 Bit       Adders := 1     
+	   2 Input   12 Bit       Adders := 2     
+	   2 Input    8 Bit       Adders := 5     
+	   2 Input    5 Bit       Adders := 2     
+	   3 Input    3 Bit       Adders := 8     
+	   2 Input    3 Bit       Adders := 8     
+	   2 Input    2 Bit       Adders := 79    
+	   3 Input    2 Bit       Adders := 74    
+	   3 Input    1 Bit       Adders := 4     
++---XORs : 
+	   2 Input     33 Bit         XORs := 1     
+	   2 Input     32 Bit         XORs := 1     
+	   2 Input      4 Bit         XORs := 4     
+	   2 Input      3 Bit         XORs := 8     
+	   2 Input      2 Bit         XORs := 47    
+	   2 Input      1 Bit         XORs := 12    
++---Registers : 
+	              128 Bit    Registers := 3     
+	              103 Bit    Registers := 4     
+	              101 Bit    Registers := 26    
+	               65 Bit    Registers := 30    
+	               64 Bit    Registers := 6     
+	               41 Bit    Registers := 1     
+	               33 Bit    Registers := 5     
+	               32 Bit    Registers := 55    
+	               31 Bit    Registers := 1     
+	               25 Bit    Registers := 2     
+	               24 Bit    Registers := 2     
+	               16 Bit    Registers := 2     
+	               15 Bit    Registers := 1     
+	               14 Bit    Registers := 1     
+	               13 Bit    Registers := 4     
+	               12 Bit    Registers := 6     
+	               10 Bit    Registers := 2     
+	                8 Bit    Registers := 21    
+	                7 Bit    Registers := 3     
+	                6 Bit    Registers := 4     
+	                5 Bit    Registers := 5     
+	                4 Bit    Registers := 9     
+	                3 Bit    Registers := 54    
+	                2 Bit    Registers := 96    
+	                1 Bit    Registers := 122   
++---RAMs : 
+	            2048K Bit	(65536 X 32 bit)          RAMs := 1     
+	              462 Bit	(3 X 154 bit)          RAMs := 1     
+	              384 Bit	(3 X 128 bit)          RAMs := 1     
+	              164 Bit	(4 X 41 bit)          RAMs := 1     
+	              136 Bit	(4 X 34 bit)          RAMs := 1     
++---Muxes : 
+	   4 Input  128 Bit        Muxes := 2     
+	   2 Input  128 Bit        Muxes := 4     
+	   2 Input  103 Bit        Muxes := 2     
+	   2 Input  101 Bit        Muxes := 13    
+	   2 Input   65 Bit        Muxes := 15    
+	   2 Input   64 Bit        Muxes := 54    
+	   7 Input   64 Bit        Muxes := 2     
+	   4 Input   64 Bit        Muxes := 2     
+	   5 Input   64 Bit        Muxes := 2     
+	   2 Input   41 Bit        Muxes := 4     
+	   2 Input   33 Bit        Muxes := 16    
+	   4 Input   33 Bit        Muxes := 4     
+	   5 Input   33 Bit        Muxes := 2     
+	   7 Input   33 Bit        Muxes := 4     
+	   2 Input   32 Bit        Muxes := 164   
+	   4 Input   32 Bit        Muxes := 24    
+	   3 Input   32 Bit        Muxes := 4     
+	   6 Input   32 Bit        Muxes := 6     
+	  10 Input   32 Bit        Muxes := 2     
+	   7 Input   32 Bit        Muxes := 2     
+	   5 Input   32 Bit        Muxes := 1     
+	  15 Input   32 Bit        Muxes := 1     
+	  19 Input   32 Bit        Muxes := 1     
+	   2 Input   31 Bit        Muxes := 2     
+	   2 Input   30 Bit        Muxes := 1     
+	   2 Input   27 Bit        Muxes := 1     
+	   2 Input   25 Bit        Muxes := 4     
+	   4 Input   25 Bit        Muxes := 1     
+	   2 Input   24 Bit        Muxes := 1     
+	   2 Input   21 Bit        Muxes := 3     
+	  16 Input   16 Bit        Muxes := 1     
+	   2 Input   16 Bit        Muxes := 17    
+	   4 Input   14 Bit        Muxes := 4     
+	   2 Input   14 Bit        Muxes := 6     
+	   2 Input   13 Bit        Muxes := 2     
+	   2 Input   12 Bit        Muxes := 5     
+	   2 Input   10 Bit        Muxes := 2     
+	   4 Input    8 Bit        Muxes := 4     
+	   2 Input    8 Bit        Muxes := 47    
+	   3 Input    8 Bit        Muxes := 1     
+	   2 Input    7 Bit        Muxes := 7     
+	   5 Input    7 Bit        Muxes := 2     
+	   2 Input    6 Bit        Muxes := 7     
+	   5 Input    6 Bit        Muxes := 1     
+	  10 Input    6 Bit        Muxes := 1     
+	   4 Input    6 Bit        Muxes := 1     
+	   2 Input    5 Bit        Muxes := 4     
+	   7 Input    5 Bit        Muxes := 1     
+	  45 Input    5 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 21    
+	   4 Input    4 Bit        Muxes := 3     
+	   5 Input    4 Bit        Muxes := 2     
+	   8 Input    4 Bit        Muxes := 1     
+	  10 Input    4 Bit        Muxes := 2     
+	  20 Input    4 Bit        Muxes := 1     
+	   6 Input    4 Bit        Muxes := 1     
+	  27 Input    4 Bit        Muxes := 1     
+	   4 Input    3 Bit        Muxes := 15    
+	   2 Input    3 Bit        Muxes := 74    
+	   5 Input    3 Bit        Muxes := 6     
+	  14 Input    3 Bit        Muxes := 1     
+	   6 Input    3 Bit        Muxes := 2     
+	   7 Input    3 Bit        Muxes := 3     
+	   9 Input    3 Bit        Muxes := 1     
+	   3 Input    3 Bit        Muxes := 2     
+	  12 Input    3 Bit        Muxes := 2     
+	  10 Input    3 Bit        Muxes := 2     
+	  32 Input    3 Bit        Muxes := 1     
+	  15 Input    3 Bit        Muxes := 2     
+	   2 Input    2 Bit        Muxes := 277   
+	   4 Input    2 Bit        Muxes := 10    
+	   3 Input    2 Bit        Muxes := 1     
+	   6 Input    2 Bit        Muxes := 1     
+	  12 Input    2 Bit        Muxes := 6     
+	  20 Input    2 Bit        Muxes := 2     
+	  10 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 411   
+	   4 Input    1 Bit        Muxes := 77    
+	   3 Input    1 Bit        Muxes := 9     
+	   6 Input    1 Bit        Muxes := 30    
+	   7 Input    1 Bit        Muxes := 31    
+	   5 Input    1 Bit        Muxes := 14    
+	  10 Input    1 Bit        Muxes := 20    
+	   9 Input    1 Bit        Muxes := 1     
+	   8 Input    1 Bit        Muxes := 2     
+	  20 Input    1 Bit        Muxes := 1     
+	  12 Input    1 Bit        Muxes := 18    
+	  19 Input    1 Bit        Muxes := 2     
+	  45 Input    1 Bit        Muxes := 1     
+	  15 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-6841] Block RAM (mem_i/mem_reg) originally specified as a Byte Wide Write Enable RAM cannot take advantage of ByteWide feature and is implemented with single write enable per RAM due to following reason.
+(address width (16) is more than optimal threshold of 12. Implementing using BWWE will require more logic and timing would be suboptimal. Please use attribute ram_decomp = power if BWWE is desired.)
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:55 ; elapsed = 00:02:02 . Memory (MB): peak = 3175.785 ; gain = 295.039 ; free physical = 283456 ; free virtual = 727323
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++------------+------------+---------------+----------------+
+|Module Name | RTL Object | Depth x Width | Implemented As | 
++------------+------------+---------------+----------------+
+|debug_rom   | mem        | 32x55         | LUT            | 
+|debug_rom   | mem        | 32x55         | LUT            | 
++------------+------------+---------------+----------------+
+
+
+Block RAM: Preliminary Mapping Report (see note below)
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name    | RTL Object    | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|rvlab_fpga_top | mem_i/mem_reg | 64 K x 32(READ_FIRST)  | W |   | 64 K x 32(WRITE_FIRST) |   | R | Port A and B     | 0      | 64     | 
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+|Module Name                                 | RTL Object                                    | Inference | Size (Depth x Width) | Primitives   | 
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+|core_ii_4/debug_i                           | u_dm_top/dap/i_dmi_cdc/i_cdc_resp/storage_reg | Implied   | 4 x 34               | RAM32M x 6   | 
+|core_ii_4/debug_i                           | u_dm_top/dap/i_dmi_cdc/i_cdc_req/storage_reg  | Implied   | 4 x 41               | RAM32M x 7   | 
+|core_ii_5/\cpu_i/u_core_default /id_stage_i | registers_i/mem_reg                           | Implied   | 32 x 32              | RAM32M x 12  | 
+|i_0/tlul_ddr_i/fifo_sys2mig_i               | storage_reg                                   | Implied   | 4 x 154              | RAM32M x 26  | 
+|i_0/tlul_ddr_i/fifo_rdata_i                 | storage_reg                                   | Implied   | 4 x 128              | RAM32M x 22  | 
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:02:01 ; elapsed = 00:02:07 . Memory (MB): peak = 3175.793 ; gain = 295.047 ; free physical = 283300 ; free virtual = 727173
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:02:29 ; elapsed = 00:02:36 . Memory (MB): peak = 3191.793 ; gain = 311.047 ; free physical = 283183 ; free virtual = 727049
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Final Mapping Report
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name    | RTL Object    | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|rvlab_fpga_top | mem_i/mem_reg | 64 K x 32(READ_FIRST)  | W |   | 64 K x 32(WRITE_FIRST) |   | R | Port A and B     | 0      | 64     | 
++---------------+---------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+
+Distributed RAM: Final Mapping Report
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+|Module Name                                 | RTL Object                                    | Inference | Size (Depth x Width) | Primitives   | 
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+|i_0/tlul_ddr_i/fifo_sys2mig_i               | storage_reg                                   | Implied   | 4 x 154              | RAM32M x 26  | 
+|i_0/tlul_ddr_i/fifo_rdata_i                 | storage_reg                                   | Implied   | 4 x 128              | RAM32M x 22  | 
+|core_ii_4/debug_i                           | u_dm_top/dap/i_dmi_cdc/i_cdc_resp/storage_reg | Implied   | 4 x 34               | RAM32M x 6   | 
+|core_ii_4/debug_i                           | u_dm_top/dap/i_dmi_cdc/i_cdc_req/storage_reg  | Implied   | 4 x 41               | RAM32M x 7   | 
+|core_ii_5/\cpu_i/u_core_default /id_stage_i | registers_i/mem_reg                           | Implied   | 32 x 32              | RAM32M x 12  | 
++--------------------------------------------+-----------------------------------------------+-----------+----------------------+--------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_0_1_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_1_1_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_2_1_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_4 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_5 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_6 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance core_i/mem_i/mem_reg_3_1_7 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:02:36 ; elapsed = 00:02:44 . Memory (MB): peak = 3370.793 ; gain = 490.047 ; free physical = 283302 ; free virtual = 727168
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:41 ; elapsed = 00:02:48 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283284 ; free virtual = 727150
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:41 ; elapsed = 00:02:48 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283280 ; free virtual = 727146
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:42 ; elapsed = 00:02:50 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283297 ; free virtual = 727163
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:43 ; elapsed = 00:02:50 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283299 ; free virtual = 727165
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:43 ; elapsed = 00:02:51 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283285 ; free virtual = 727151
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:43 ; elapsed = 00:02:51 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283275 ; free virtual = 727142
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |rvlab_mig     |         1|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+------------+------+
+|      |Cell        |Count |
++------+------------+------+
+|1     |rvlab_mig   |     1|
+|2     |BUFG        |     3|
+|3     |BUFGCE      |     1|
+|4     |CARRY4      |   172|
+|5     |LUT1        |   149|
+|6     |LUT2        |   611|
+|7     |LUT3        |  1257|
+|8     |LUT4        |  1245|
+|9     |LUT5        |  1877|
+|10    |LUT6        |  3297|
+|11    |MMCME2_BASE |     1|
+|12    |MUXF7       |    17|
+|13    |RAM32M      |    70|
+|14    |RAM32X1D    |     6|
+|15    |RAMB36E1    |    64|
+|48    |FDCE        |  2988|
+|49    |FDPE        |   103|
+|50    |FDRE        |  3138|
+|51    |FDSE        |    12|
+|52    |IBUF        |     6|
+|53    |IBUFDS      |     4|
+|54    |IOBUF       |    35|
+|55    |OBUF        |    34|
+|56    |OBUFDS      |     4|
++------+------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:43 ; elapsed = 00:02:51 . Memory (MB): peak = 3370.797 ; gain = 490.051 ; free physical = 283276 ; free virtual = 727142
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 3 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:02:36 ; elapsed = 00:02:45 . Memory (MB): peak = 3370.797 ; gain = 326.406 ; free physical = 283346 ; free virtual = 727212
+Synthesis Optimization Complete : Time (s): cpu = 00:02:43 ; elapsed = 00:02:51 . Memory (MB): peak = 3370.801 ; gain = 490.051 ; free physical = 283341 ; free virtual = 727208
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Project 1-454] Reading design checkpoint '/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig.dcp' for cell 'tlul_ddr_i/mig_i'
+Netlist sorting complete. Time (s): cpu = 00:00:00.30 ; elapsed = 00:00:00.30 . Memory (MB): peak = 3370.809 ; gain = 0.000 ; free physical = 283435 ; free virtual = 727301
+WARNING: [Netlist 29-345] The value of SIM_DEVICE on instance 'clkmgr_i/clkbuf_i' of type 'BUFGCE' is 'ULTRASCALE'; it is being changed to match the current FPGA architecture, '7SERIES'. For functional simulation to match hardware behavior, the value of SIM_DEVICE should be changed in the source netlist. 
+INFO: [Netlist 29-17] Analyzing 681 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2021.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/user_design/constraints/rvlab_mig.xdc] for cell 'tlul_ddr_i/mig_i'
+Finished Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig/user_design/constraints/rvlab_mig.xdc] for cell 'tlul_ddr_i/mig_i'
+Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc]
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc:10]
+INFO: [Timing 38-2] Deriving generated clocks [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc:10]
+Finished Parsing XDC File [/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/xdc/rvlab_fpga_top.xdc]
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/.gen/sources_1/ip/rvlab_mig/rvlab_mig.dcp'
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3628.656 ; gain = 0.000 ; free physical = 283008 ; free virtual = 726875
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 258 instances were transformed.
+  BUFGCE => BUFGCTRL: 1 instance 
+  IOBUF => IOBUF (IBUF, OBUFT): 35 instances
+  IOBUFDS_DIFF_OUT_INTERMDISABLE => IOBUFDS_DIFF_OUT_INTERMDISABLE (IBUFDS_INTERMDISABLE_INT(x2), INV, OBUFTDS(x2)): 2 instances
+  IOBUF_INTERMDISABLE => IOBUF_INTERMDISABLE (IBUF_INTERMDISABLE, OBUFT): 16 instances
+  MMCME2_BASE => MMCME2_ADV: 1 instance 
+  OBUFDS => OBUFDS_DUAL_BUF (INV, OBUFDS(x2)): 1 instance 
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 188 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 14 instances
+
+Synth Design complete, checksum: 7b226054
+INFO: [Common 17-83] Releasing license: Synthesis
+370 Infos, 113 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:03:05 ; elapsed = 00:03:08 . Memory (MB): peak = 3628.656 ; gain = 768.188 ; free physical = 283241 ; free virtual = 727107
+Command: opt_design -directive NoBramPowerOpt
+INFO: [Vivado_Tcl 4-136] Directive used for opt_design is: NoBramPowerOpt
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a200t'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 3692.688 ; gain = 64.031 ; free physical = 283251 ; free virtual = 727117
+
+Starting Logic Optimization Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 1 Retarget
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[10]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[10]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[11]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[11]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[12]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[12]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[13]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[13]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[14]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[14]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[15]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[15]_i_2, which resulted in an inversion of 7 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[16]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[16]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[17]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[17]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[18]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[18]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[19]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[19]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[20]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[20]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[21]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[21]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[22]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[22]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[23]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[23]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[24]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[24]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[25]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[25]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[26]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[26]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[27]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[27]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[28]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[28]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[29]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[29]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[30]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[30]_i_2, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[31]_i_2 into driver instance core_i/cpu_i/fifo_d/rdata_q[31]_i_3, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[8]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[8]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_d/rdata_q[9]_i_1 into driver instance core_i/cpu_i/fifo_d/rdata_q[9]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][0]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][0]_i_2, which resulted in an inversion of 7 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][10]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][10]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][11]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][11]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][12]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][12]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][13]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][13]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][14]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][14]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][15]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][15]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][16]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][16]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][17]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][17]_i_2, which resulted in an inversion of 6 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][18]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][18]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][19]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][19]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][1]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][1]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][20]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][20]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][21]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][21]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][22]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][22]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][23]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][23]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][24]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][24]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][25]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][25]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][26]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][26]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][27]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][27]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][28]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][28]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][29]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][29]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][2]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][2]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][30]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][30]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][31]_i_2 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][31]_i_3, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][3]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][3]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][4]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][4]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][5]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][5]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][6]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][6]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][7]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][7]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][8]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][8]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][9]_i_1 into driver instance core_i/cpu_i/fifo_i/g_fifo_regs[2].rdata_q[2][9]_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/cpu_i/u_core_default/if_stage_i/prefetch_buffer_i/fifo_i/gen_normal_case.mask[3]_i_1 into driver instance core_i/cpu_i/u_core_default/if_stage_i/prefetch_buffer_i/fifo_i/gen_normal_case.mask[3]_i_3, which resulted in an inversion of 276 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/student_i/rlight_i/adapter_reg_i/rspop[0]_i_1 into driver instance core_i/student_i/rlight_i/adapter_reg_i/rspop[0]_i_3__0, which resulted in an inversion of 3 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/timer_i/u_reg/u_reg_if/rspop[0]_i_1__1 into driver instance core_i/timer_i/u_reg/u_reg_if/rspop[0]_i_2__1, which resulted in an inversion of 3 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_s1n_15/gen_dfifo[2].fifo_d/reqfifo/gen_normal_case.mask[3]_i_1__1 into driver instance core_i/xbar_main_i/u_s1n_15/gen_dfifo[2].fifo_d/reqfifo/req_pending_i_2, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_sm1_10/gen_host_fifo[1].u_hostfifo/reqfifo/gen_normal_fifo.storage[0][85]_i_1 into driver instance core_i/xbar_main_i/u_sm1_10/gen_host_fifo[1].u_hostfifo/reqfifo/gen_normal_fifo.fifo_rptr[1]_i_2__1, which resulted in an inversion of 70 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_sm1_10/gen_host_fifo[1].u_hostfifo/reqfifo/gen_normal_fifo.storage[0][86]_i_2 into driver instance core_i/xbar_main_i/u_sm1_10/gen_host_fifo[1].u_hostfifo/reqfifo/gen_normal_fifo.fifo_rptr[1]_i_2__2, which resulted in an inversion of 68 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_sm1_10/gen_host_fifo[3].u_hostfifo/reqfifo/gen_normal_case.mask[3]_i_1__0 into driver instance core_i/xbar_main_i/u_sm1_10/gen_host_fifo[3].u_hostfifo/reqfifo/gen_normal_case.mask[3]_i_3__0, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_sm1_12/gen_arb_ppc.u_reqarb/FSM_sequential_current_state[0]_i_1 into driver instance core_i/xbar_main_i/u_sm1_12/gen_arb_ppc.u_reqarb/desc_response_received_i_3, which resulted in an inversion of 170 pins
+INFO: [Opt 31-1287] Pulled Inverter core_i/xbar_main_i/u_sm1_12/gen_arb_ppc.u_reqarb/FSM_sequential_current_state[1]_i_1 into driver instance core_i/xbar_main_i/u_sm1_12/gen_arb_ppc.u_reqarb/FSM_sequential_current_state[1]_i_2, which resulted in an inversion of 101 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/fifo_sys2mig_i/bm_state[0]_i_1 into driver instance tlul_ddr_i/fifo_sys2mig_i/storage_reg_0_3_126_131_i_4, which resulted in an inversion of 4 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_prbs_rdlvl_gen.u_ddr_phy_prbs_rdlvl/complex_victim_inc_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_prbs_rdlvl_gen.u_ddr_phy_prbs_rdlvl/samples_cnt_r[11]_i_3, which resulted in an inversion of 17 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_tempmon_0/tempmon_state[0]_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/ddr_phy_tempmon_0/tempmon_state[10]_i_6, which resulted in an inversion of 14 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/u_ddr_phy_init/my_full[5]_i_3 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/u_ddr_phy_init/my_empty[7]_i_2__1, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/arb_mux0/arb_row_col0/row_arb0/inhbt_act_faw.SRLC32E0_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/arb_mux0/arb_row_col0/row_arb0/inhbt_act_faw.SRLC32E0_i_2, which resulted in an inversion of 5 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[0].bank0/bank_queue0/idle_r_lcl_i_1__2 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[0].bank0/bank_queue0/idle_r_lcl_i_2__2, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[1].bank0/bank_queue0/idle_r_lcl_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[1].bank0/bank_queue0/idle_r_lcl_i_2, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[2].bank0/bank_queue0/idle_r_lcl_i_1__0 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[2].bank0/bank_queue0/idle_r_lcl_i_2__0, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[3].bank0/bank_queue0/idle_r_lcl_i_1__1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/bank_mach0/bank_cntrl[3].bank0/bank_queue0/idle_r_lcl_i_2__1, which resulted in an inversion of 9 pins
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/rank_mach0/rank_common0/zq_cntrl.zq_timer.zq_timer_r[0]_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/mem_intfc0/mc0/rank_mach0/rank_common0/zq_cntrl.zq_timer.zq_timer_r[0]_i_4, which resulted in an inversion of 2 pins
+INFO: [Opt 31-138] Pushed 8 inverter(s) to 8 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 1b8839d60
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283067 ; free virtual = 726933
+INFO: [Opt 31-389] Phase Retarget created 76 cells and removed 235 cells
+INFO: [Opt 31-1021] In phase Retarget, 18 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1553a9fda
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283064 ; free virtual = 726930
+INFO: [Opt 31-389] Phase Constant propagation created 19 cells and removed 75 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 16f27506b
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:03 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283062 ; free virtual = 726928
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 184 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: 13b419bd8
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:03 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283062 ; free virtual = 726928
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 13b419bd8
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:03 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283069 ; free virtual = 726935
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+INFO: [Opt 31-1287] Pulled Inverter tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/u_ui_top/ui_cmd0/req_wr_r_lcl_i_1 into driver instance tlul_ddr_i/mig_i/u_rvlab_mig_mig/u_memc_ui_top_std/u_ui_top/ui_cmd0/rd_wr_r_lcl_i_2, which resulted in an inversion of 5 pins
+Phase 6 Post Processing Netlist | Checksum: 1038641d4
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:03 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283056 ; free virtual = 726922
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 1 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |              76  |             235  |                                             18  |
+|  Constant propagation         |              19  |              75  |                                              0  |
+|  Sweep                        |               0  |             184  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               1  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.05 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283043 ; free virtual = 726909
+Ending Logic Optimization Task | Checksum: 1ac7b7cb6
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:03 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283038 ; free virtual = 726904
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283240 ; free virtual = 727106
+Ending Netlist Obfuscation Task | Checksum: 1ac7b7cb6
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283240 ; free virtual = 727106
+INFO: [Common 17-83] Releasing license: Implementation
+464 Infos, 113 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 3692.688 ; gain = 64.031 ; free physical = 283240 ; free virtual = 727106
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.23 ; elapsed = 00:00:00.06 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283234 ; free virtual = 727102
+INFO: [Common 17-1381] The checkpoint '/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 3692.688 ; gain = 0.000 ; free physical = 283219 ; free virtual = 727092
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+Command: report_qor_assessment -file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.qor_assessment.txt
+INFO: [DRC 23-27] Running DRC with 8 threads
+report_qor_assessment completed successfully
+Command: report_methodology -file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.methodology.txt
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 8 threads
+INFO: [Vivado_Tcl 2-1520] The results of Report Methodology are in file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.methodology.txt.
+report_methodology completed successfully
+Command: report_drc -file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.drc.txt
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/rvlab_fpga_top/syn/rvlab_fpga_top.drc.txt.
+report_drc completed successfully
+INFO: [Common 17-206] Exiting Vivado at Mon May  6 08:15:19 2024...

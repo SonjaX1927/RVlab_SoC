@@ -1,0 +1,19 @@
+{
+  "block_id": "sw_rlight",
+  "task_id": "delta",
+  "data": {
+    "deltafile": {
+      "_type": "Path",
+      "value": "sw_rlight/delta/delta"
+    },
+    "returned_data": true,
+    "time_started": {
+      "_type": "Time",
+      "value": 1714975141.68356
+    },
+    "time_finished": {
+      "_type": "Time",
+      "value": 1714975141.68983
+    }
+  }
+}

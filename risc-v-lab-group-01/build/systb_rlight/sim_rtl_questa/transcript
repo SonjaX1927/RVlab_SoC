@@ -1,0 +1,199 @@
+# //  Questa Sim-64
+# //  Version 2022.4 linux_x86_64 Oct 18 2022
+# //
+# //  Copyright 1991-2022 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# vsim -onfinish stop "+transport_int_delays" -voptargs=""+acc"" -suppress 16107 -suppress 14408 -suppress 3262 -L /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims "+jtag_prog_mem=/home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/sw_rlight/delta/delta" system_tb glbl -do "/home/rvlab/opt/python/lib/python3.10/site-packages/notcl/notcl.tcl" 
+# Start time: 07:59:10 on May 06,2024
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility.
+# ** Note: (vopt-143) Recognized 1 FSM in module "student_rlight(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "rvlab_tap(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "student_dma(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dmi_jtag(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "ibex_multdiv_slow(fast)".
+# ** Note: (vopt-143) Recognized 2 FSMs in module "rvlab_tlul_ddr(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "ibex_load_store_unit(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "ibex_controller(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "dm_mem(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.dm(fast)
+# Loading work.jtag_master(fast__1)
+# Loading work.rvlab_board(fast)
+# Loading work.top_pkg(fast)
+# Loading work.tlul_pkg(fast)
+# Loading work.rvlab_fpga_top(fast)
+# Loading work.rvlab_clkmgr(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.BUFG(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.MMCME2_BASE(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.MMCME2_ADV(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.BUFGCE(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.BUFG(fast__1)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.FDRE(fast)
+# Loading work.ddr_ctrl_reg_pkg(fast)
+# Loading work.rvlab_tlul_ddr(fast)
+# Loading work.ddr_ctrl_reg_top(fast)
+# Loading work.tlul_adapter_reg(fast)
+# Loading work.tlul_err(fast)
+# Loading work.prim_subreg_ext(fast)
+# Loading work.prim_subreg_ext(fast__1)
+# Loading work.prim_subreg(fast)
+# Loading work.prim_flop_2sync(fast)
+# Loading work.prim_flop_2sync(fast__1)
+# Loading work.prim_fifo_async(fast)
+# Loading work.prim_flop_2sync(fast__2)
+# Loading work.prim_fifo_async(fast__1)
+# Loading work.iocell_opendrain(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.IOBUF(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.IBUFDS(fast)
+# Loading /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/simlibs_questa/unisims/unisims.OBUFDS(fast)
+# Loading work.iocell_bidir(fast)
+# Loading work.iocell_bidir(fast__1)
+# Loading work.rvlab_core(fast)
+# Loading work.tl_main_pkg(fast)
+# Loading work.xbar_main(fast)
+# Loading work.tlul_socket_1n(fast)
+# Loading work.tlul_fifo_sync(fast)
+# Loading work.prim_fifo_sync(fast)
+# Loading work.prim_fifo_sync(fast__1)
+# Loading work.tlul_fifo_sync(fast__1)
+# Loading work.prim_fifo_sync(fast__2)
+# Loading work.tlul_err_resp(fast)
+# Loading work.tlul_socket_m1(fast)
+# Loading work.prim_arbiter_ppc(fast)
+# Loading work.tlul_socket_m1(fast__1)
+# Loading work.tlul_fifo_sync(fast__2)
+# Loading work.prim_fifo_sync(fast__3)
+# Loading work.prim_fifo_sync(fast__4)
+# Loading work.tlul_socket_1n(fast__1)
+# Loading work.tlul_fifo_sync(fast__3)
+# Loading work.prim_fifo_sync(fast__5)
+# Loading work.tl_peri_pkg(fast)
+# Loading work.xbar_peri(fast)
+# Loading work.tlul_socket_1n(fast__2)
+# Loading work.rvlab_cpu(fast)
+# Loading work.ibex_pkg(fast)
+# Loading work.ibex_core(fast)
+# Loading work.ibex_if_stage(fast)
+# Loading work.ibex_prefetch_buffer(fast)
+# Loading work.ibex_fetch_fifo(fast)
+# Loading work.ibex_compressed_decoder(fast)
+# Loading work.ibex_id_stage(fast)
+# Loading work.ibex_register_file(fast)
+# Loading work.ibex_decoder(fast)
+# Loading work.ibex_controller(fast)
+# Loading work.ibex_ex_block(fast)
+# Loading work.ibex_alu(fast)
+# Loading work.ibex_multdiv_slow(fast)
+# Loading work.ibex_load_store_unit(fast)
+# Loading work.ibex_cs_registers(fast)
+# Loading work.tlul_fifo_sync(fast__4)
+# Loading work.rvlab_bram_main(fast)
+# Loading work.tlul_adapter_sram(fast)
+# Loading work.prim_fifo_sync(fast__6)
+# Loading work.prim_fifo_sync(fast__7)
+# Loading work.rvlab_debug(fast)
+# Loading work.rvlab_tap_pkg(fast)
+# Loading work.rvlab_tap(fast)
+# Loading work.rv_dm(fast)
+# Loading work.dm_csrs(fast)
+# Loading work.prim_fifo_sync(fast__8)
+# Loading work.dm_sba(fast)
+# Loading work.tlul_adapter_host(fast)
+# Loading work.dm_mem(fast)
+# Loading work.debug_rom(fast)
+# Loading work.dmi_jtag(fast)
+# Loading work.dmi_cdc(fast)
+# Loading work.prim_fifo_async(fast__2)
+# Loading work.prim_flop_2sync(fast__3)
+# Loading work.prim_fifo_async(fast__3)
+# Loading work.tlul_adapter_sram(fast__1)
+# Loading work.rv_timer_reg_pkg(fast)
+# Loading work.rv_timer(fast)
+# Loading work.prim_intr_hw(fast)
+# Loading work.timer_core(fast)
+# Loading work.rv_timer_reg_top(fast)
+# Loading work.tlul_adapter_reg(fast__1)
+# Loading work.prim_subreg(fast__1)
+# Loading work.prim_subreg(fast__2)
+# Loading work.prim_subreg(fast__3)
+# Loading work.prim_subreg(fast__4)
+# Loading work.prim_subreg(fast__5)
+# Loading work.regdemo_reg_pkg(fast)
+# Loading work.rvlab_regdemo(fast)
+# Loading work.regdemo_reg_top(fast)
+# Loading work.prim_subreg_ext(fast__2)
+# Loading work.prim_subreg(fast__6)
+# Loading work.student(fast)
+# Loading work.student_rlight(fast)
+# Loading work.student_dma_reg_pkg(fast)
+# Loading work.student_dma(fast)
+# Loading work.student_dma_reg_top(fast)
+# Loading work.tlul_adapter_reg(fast__2)
+# Loading work.prim_subreg_ext(fast__3)
+# Loading work.rvlab_tests(fast)
+# Loading work.rvlab_test_utils(fast)
+# Loading work.glbl(fast)
+# do /home/rvlab/opt/python/lib/python3.10/site-packages/notcl/notcl.tcl
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/reg_addr'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 124
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/reg_we'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 125
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/reg_re'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 126
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/reg_wdata'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 127
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/reg_rdata'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 128
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/pattern'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 129
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/mode'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 130
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/prescaler'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 131
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/prescaler_counter'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 132
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/prescaler_strobe'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 133
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/shift_amount'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 134
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/shift_direction'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 135
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/rotate'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 136
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/system_tb/board/DUT/core_i/student_i/rlight_i/next'.
+# Executing ONERROR command at macro /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/design/wave/system_tb.do line 138
+# [    ] test_idcode
+# [pass] test_idcode
+# [    ] test_dtmcs
+# version:  1, dmistat: 0, idle: 1, abits:  7
+# [pass] test_dtmcs
+# rvlab_tests: Running software /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/build/sw_rlight/delta/delta.
+# [    ] test_sw
+# Loading memory...
+# Starting program...
+# Waiting for program to finish...
+# hostio: REGA 0x0000affe
+# hostio: REGA 0x12345678
+# hostio: REGB 0x00000001
+# hostio: REGA 0x1234fe78
+# hostio: REGA 0x12348078
+# Execution finished. Return value:          0
+# [pass] test_sw
+# ** Note: $finish    : /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/system_tb.sv(230)
+#    Time: 588560 ns  Iteration: 1  Instance: /system_tb
+# Break in Module system_tb at /home/rvlab/groups/rvlab01/Desktop/ex2_dev_sonja/risc-v-lab-group-01/src/fv/system_tb.sv line 230
+step -over
+# End time: 08:07:10 on May 06,2024, Elapsed time: 0:08:00
+# Errors: 0, Warnings: 1, Suppressed Warnings: 4
