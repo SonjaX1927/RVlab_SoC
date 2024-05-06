@@ -1,9 +1,9 @@
 - [Exe02](#exe02)
-- [Modify main](##modify_main)
-  - [Perform a logic synthesis of rvlab_fpta_top](###logicsync)
-  - [Perform a place and route of rvlab_fpga_top](#pnr)
-  - [Generate the bitfile](#generate_the_bitfile)
-- [FPGA netlist simulation](#netlist)
+  - [Modify main](#modify_main)
+    - [Perform a logic synthesis of rvlab_fpta_top](#logicsync)
+    - [Perform a place and route of rvlab_fpga_top](#pnr)
+    - [Generate the bitfile](#generate_the_bitfile)
+  - [FPGA netlist simulation](#netlist)
 
 # Exe02
 ## Modify main
