@@ -1,5 +1,5 @@
 ## Exe02
-### Modify main.c
+## Modify main.c
 here to check 3 kind of register length <br>
 try some tests on RegA (led patterns) and RegB (FSM initial):
 * assign RegA with specific patterns
@@ -43,7 +43,12 @@ Analyzing Clock Domains: Pay special attention to the cross-domain paths as they
 
 ### Perform a place and route of rvlab_fpga_top
 Generate again: this time also  locate the reported paths in the RTL(within the timing summary) <br>
-![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/aeab8169-c650-4d43-8c24-e2d31bd40597)
+![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/aeab8169-c650-4d43-8c24-e2d31bd40597) <br>
 the resulting schematic and layout with the tool "vivado": <br>
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/9a037694-825a-4655-8e0a-a5a237c095a2)
 
+### Generate the bitfile
+rvlab_fpga_top.io_report.txt for any unplaced IOs. Any issues might kill the FPGA. But the result seems fine. <br>
+![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/6ada80ff-e5f2-45b6-beda-e3393bbbfaf3)
+
+## FPGA netlist simulation
