@@ -11,7 +11,8 @@ Generate mainly: <br>
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/5324f1e7-3471-4ce0-ab75-da1c81b7ed5a) <br>
 Information that could be read out from rvlab_fpga_top.timing_summary.txt: <br>
 
->1. Timing Summary Report
+<div style="background-color: gray; padding: 10px;">
+1. Timing Summary Report
 This section outlines the basic settings and configurations used during the timing analysis, including:
 
 Multi Corner Analysis: Indicates that the analysis considers different process corners (e.g., slow, fast).
@@ -37,5 +38,7 @@ Key Points to Address:
 Addressing Negative Slacks: The negative slack values indicate that the timing requirements are not being met. Strategies such as adjusting the clock frequencies, optimizing the logic, or improving the placement and routing may be needed.
 Specifying Missing Delays: The report highlights missing input and output delays which need to be specified to ensure the timing analysis accurately reflects the real-world operation.
 Analyzing Clock Domains: Pay special attention to the cross-domain paths as they often are sources of timing issues.
+
+</div>
 
 ### Perform a place and route of rvlab_fpga_top
