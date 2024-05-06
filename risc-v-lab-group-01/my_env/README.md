@@ -1,5 +1,5 @@
 - [Exe02](#exe02)
-- [Modify main.c](#modify_main)
+- [Modify main](#modify_main)
   - [Perform a logic synthesis of rvlab_fpta_top](#logicsync)
   - [Perform a place and route of rvlab_fpga_top](#pnr)
   - [Generate the bitfile](#bitfile)
