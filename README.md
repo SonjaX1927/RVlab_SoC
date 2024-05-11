@@ -23,4 +23,11 @@ CPU accessible registers [definition](risc-v-lab-group-01/src/design/reggen/stud
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/a1a511a7-62ff-48fd-90fb-4e6f2c2193b4)
 
 ### 2. Hardware implementation
-extend the module with "memcpy", use fifo for [ending](risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv) <br>
+extend the module with "memcpy", use fifo for [pending](risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv) <br>
+
+### 3. Software implementation
+Extend memcpy_soft to contain a complete software implementation of mem copy with the same functionality as your hardware implementation. <br>
+Complete memcpy_dma so it invokes your hardware implementation.<br>
+
+### 4. Test cases
+### 5. Benchmarking
