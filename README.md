@@ -21,3 +21,6 @@ with [intiation in](risc-v-lab-group-01/src/rtl/student/student.sv)
 ```
 CPU accessible registers [definition](risc-v-lab-group-01/src/design/reggen/student_dma.hjson), but basically like this:
 ![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/a1a511a7-62ff-48fd-90fb-4e6f2c2193b4)
+
+### 2. Hardware implementation
+extend the module with "memcpy", use fifo for [ending](risc-v-lab-group-01/src/rtl/prim/prim_fifo_sync.sv) <br>
