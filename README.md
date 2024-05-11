@@ -7,7 +7,7 @@ System on Chip in TU Berlin
 [specification](https://github.com/SonyaX20/RVlab_SoC/blob/main/risc-v-lab-group-01/docs/resources/res/tilelink-spec-1.8.0.pdf)
 
 ### 1. Explore the example
-[example for TL-UL integration](risc-v-lab-group-01/src/rtl/student/student_dma.sv)
+example for [TL-UL integration](risc-v-lab-group-01/src/rtl/student/student_dma.sv) <br>
 with [intiation in](risc-v-lab-group-01/src/rtl/student/student.sv) 
 ```verilog
     student_dma dma_i (
@@ -19,3 +19,5 @@ with [intiation in](risc-v-lab-group-01/src/rtl/student/student.sv)
     .tl_host_i
   );
 ```
+CPU accessible registers [definition](risc-v-lab-group-01/src/design/reggen/student_dma.hjson), but basically like this:
+![image](https://github.com/SonyaX20/RVlab_SoC/assets/147299585/a1a511a7-62ff-48fd-90fb-4e6f2c2193b4)
