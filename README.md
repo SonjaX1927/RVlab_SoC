@@ -5,3 +5,6 @@ System on Chip in TU Berlin
 > implement a simple TL-UL host. master bus. <br>
 > TL-UL Protocol: Tilelink Uncached Lightweight. integrated in RISC-V <br>
 [specification](https://github.com/SonyaX20/RVlab_SoC/blob/main/risc-v-lab-group-01/docs/resources/res/tilelink-spec-1.8.0.pdf)
+
+### 1. Explore the example
+[example for TL-UL integration](risc-v-lab-group-01/src/rtl/student/student_dma.sv)
