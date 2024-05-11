@@ -8,3 +8,14 @@ System on Chip in TU Berlin
 
 ### 1. Explore the example
 [example for TL-UL integration](risc-v-lab-group-01/src/rtl/student/student_dma.sv)
+with [intiation in](risc-v-lab-group-01/src/rtl/student/student.sv) 
+```verilog
+    student_dma dma_i (
+    .clk_i,
+    .rst_ni,
+    .tl_o (tl_device_fast_o),
+    .tl_i (tl_device_fast_i),
+    .tl_host_o,
+    .tl_host_i
+  );
+```
