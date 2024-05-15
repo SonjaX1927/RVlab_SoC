@@ -15,6 +15,7 @@ module student_rlight (
   logic [31:0] wdata;
   logic [31:0] rdata;
 
+/*
   tlul_adapter_reg #(
     .RegAw(4),
     .RegDw(32)
@@ -33,13 +34,38 @@ module student_rlight (
     .rdata_i(rdata),
     .error_i('0)
   );
+  */
+  
+  import student_rlight_reg_pkg::*;
+
+  student_rlight_reg2hw_t reg2hw;
+  student_rlight_hw2reg_t hw2reg;
+  
+  student_rlight_reg_top test(
+  .clk_i,
+  .rst_ni,
+
+  // Below Regster interface can be changed
+  .tl_i,
+  .tl_o,
+  // To HW
+  .reg2hw, // Write
+  .hw2reg, // Read
+
+  // Config
+  .devmode_i('0) // If 1, explicit error return for unmapped register access
+);
 
   localparam logic [3:0] ADDR_REGA = 4'h0;
   localparam logic [3:0] ADDR_REGB = 4'h4;
-  localparam integer cnt_delay = 3;
+  localparam logic [3:0] ADDR_REGC = 4'h8;
+  localparam integer reset_cnt_delay = 3;
+  localparam logic [7:0] reset_led_pattern = 8'b00111100;
 
   logic [31:0] regA;
   logic [ 7:0] regB;
+  logic [ 7:0] regC;
+
 
   // Bus reads
   // ---------
@@ -50,6 +76,7 @@ module student_rlight (
       case (addr)
         ADDR_REGA:  rdata[31:0] = regA;
         ADDR_REGB:  rdata[ 7:0] = regB;
+        ADDR_REGC:  rdata[ 7:0] = regC;
         default:    rdata       = '0;
       endcase
     end
@@ -63,11 +90,13 @@ module student_rlight (
     if (~rst_ni) begin
       regA   <= 32'h0000AFFE; // reset value
       regB   <= '0;           // reset value
+      regC   <= reset_cnt_delay; // reset value
     end else begin
       if (we) begin
         case (addr)
           ADDR_REGA: regA <= wdata[31:0];
           ADDR_REGB: regB <= wdata[ 7:0];
+          ADDR_REGC: regC <= wdata[ 7:0];
           default: ;
         endcase
       end // if(we)
@@ -77,40 +106,40 @@ module student_rlight (
 
   // Demo FSM. Replace with your rlight
   // ----------------------------------
-  enum logic[1:0] {ping_pong, rot_left, rot_right, stop} state; 
+  enum logic[1:0] {ping_pong, rot_left, rot_right, stop} mode; 
     logic [7:0] led;
-    logic [2:0] cnt;
+    logic [7:0] cnt;
     logic [3:0] cnt_pp;
     logic [7:0] temp_pp;
 
   always_ff @(posedge clk_i, negedge rst_ni) begin
   	if (~rst_ni) begin
-	      state   <= ping_pong;
-	      led     <= 8'hfe;
-	      cnt     <= cnt_delay;
+	      mode   <= ping_pong;
+	      led     <= reset_led_pattern;
+	      cnt     <= reset_cnt_delay;
 	      cnt_pp <= '0;
 	      temp_pp [7:0] <= 8'b00000000;
     	end //if ~rst_ni
     	else begin
     	      case (regB)
 		    	0: begin
-			  state   <= ping_pong;
+			  mode   <= ping_pong;
 			end // 0
 			1: begin
-			  state   <= rot_left;
+			  mode   <= rot_left;
 			end // 1
 			2: begin
-			  state   <= rot_right;
+			  mode   <= rot_right;
 			end // 2
 			3: begin
-			  state   <= stop;
+			  mode   <= stop;
 			end // 3
 			default: begin
-			  state <= ping_pong;
+			  mode <= ping_pong;
 			end // default
 	      endcase
-	      case (state)
-    		//ping pong
+	      case (mode)
+    	      //ping pong
       			ping_pong: begin
 				if(cnt != 0) begin
 				cnt <= cnt - 1;
@@ -134,7 +163,7 @@ module student_rlight (
 						  cnt_pp[3] <='b0;
 					      end
           				end
-				cnt <= cnt_delay;
+				cnt <= regC;
         			end//else
      			end//ping_pong
      		//rot_left
@@ -145,7 +174,7 @@ module student_rlight (
 				else begin
 				   led[0] <= led[7];
 				   led[7:1] <= led[6:0];
-				   cnt <= cnt_delay;
+				   cnt <= regC;
 				end
 			end//rot_left	
 		//rot_right
@@ -156,7 +185,7 @@ module student_rlight (
 			       	else begin
 					led[7] <= led[0];
 					led[6:0] <= led[7:1];
-					cnt <= cnt_delay;
+					cnt <= regC;
 				end
 			end//rot_right
 			stop: begin

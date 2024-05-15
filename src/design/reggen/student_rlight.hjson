@@ -1,0 +1,40 @@
+{
+  name: "student_rlight"
+  clock_primary: "sys_clk"
+  bus_device: "tlul"
+  regwidth: "32"
+  registers: [
+    {
+      name: "ADDR_REGA"
+      desc: "pattern"
+      swaccess: "rw"
+      hwaccess: "hwo"
+      hwext: "true"
+      hwqe: "true"
+      fields: [
+        {bits: "31:0", name: "val", desc: "value"}
+      ]
+    }
+    {
+      name: "ADDR_REGB"
+      desc: "mode"
+      swaccess: "rw"
+      hwaccess: "hro"
+      hwqe: "true"
+      fields: [
+        {bits: "7:0", name: "val", desc: "value"}
+      ]
+    }
+    {
+      name: "ADDR_REGC"
+      desc: "delay"
+      swaccess: "rw"
+      hwaccess: "hro"
+      hwqe: "true"
+      fields:
+      [
+        {bits: "7:0", name: "val", desc: "val"}
+      ]
+    }
+  ]
+}

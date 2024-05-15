@@ -21,7 +21,11 @@
 #include "reggen/student_dma.h"
 #define STUDENT_DMA0_BASE_ADDR 0x20000000
 
+
 // Add includes for additional register definition headers
 // and define corresponding _BASE_ADDR values here.
+
+#include "reggen/student_rlight.h"
+#define STUDENT_RLIGHT0_BASE_ADDR 0x2f000000
 
 #endif // _RVLAB_H
