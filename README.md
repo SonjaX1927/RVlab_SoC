@@ -1,5 +1,5 @@
 # RVlab_SoC
-System at Chip in TU Berlin
+System at Chip, WiSe 2024/2025 TU Berlin
 
 ## Ex. 4: DMA / TL-UL host implementation
 > implement a simple TL-UL host. master bus. <br>
