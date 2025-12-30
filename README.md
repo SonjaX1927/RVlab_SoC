@@ -1,5 +1,5 @@
 # RVlab_SoC
-System on Chip in TU Berlin
+System at Chip in TU Berlin
 
 ## Ex. 4: DMA / TL-UL host implementation
 > implement a simple TL-UL host. master bus. <br>
